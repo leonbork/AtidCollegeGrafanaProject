@@ -18,4 +18,14 @@ public class Verifications extends CommonOps {
         wait.until(ExpectedConditions.visibilityOf(elems.get(elems.size()-1)));
         Assert.assertEquals(elems.size(), expected);
     }
+
+    public static void visibilityOfElements(List<WebElement> elems){
+        for (WebElement elem: elems) {
+            softAssert.assertTrue(elem.isDisplayed(), "Sorry " + elem.getText() + " not displayed");
+        }
+        softAssert.assertAll("Some elements were not displayed");
+    }
+
+
+
 }

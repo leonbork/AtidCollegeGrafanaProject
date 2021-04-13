@@ -3,6 +3,7 @@ package utilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.asserts.SoftAssert;
 import pageObject.grafana.AddNewUserPage;
 import pageObject.grafana.EditUserPage;
 import pageObject.grafana.ServerAdminMainPage;
@@ -13,6 +14,8 @@ public class Base {
     protected static WebDriver driver;
     protected static WebDriverWait wait;
     protected static Actions action;
+    protected static SoftAssert softAssert;
+
 
 
     // Pages Objects

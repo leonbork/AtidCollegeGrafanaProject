@@ -11,6 +11,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <aspectj.version>1.9.2</aspectj.version>
     </properties>
 
 
@@ -37,6 +38,13 @@
         <version>4.2.0</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-maven -->
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-testng</artifactId>
+        <version>2.13.9</version>
+        <scope>test</scope>
+    </dependency>
 
 
 </dependencies>

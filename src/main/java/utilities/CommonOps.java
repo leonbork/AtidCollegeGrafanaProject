@@ -10,9 +10,35 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.asserts.SoftAssert;
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 public class CommonOps extends Base {
+
+    public static String getData(String nodeName){
+        File fXmlFile;
+        DocumentBuilderFactory dbFactory;
+        DocumentBuilder dBuilder;
+        Document doc = null;
+        try {
+            fXmlFile = new File("./Configuration/DataConfig.xml");
+            dbFactory = DocumentBuilderFactory.newInstance();
+            dBuilder = dbFactory.newDocumentBuilder();
+            doc = dBuilder.parse(fXmlFile);
+            doc.getDocumentElement().normalize();
+        }
+        catch (Exception e){
+            System.out.println("Error Reading XML file: " + e);
+        }
+        finally {
+            return doc.getElementsByTagName(nodeName).item(0).getTextContent();
+        }
+    }
 
     public void initBrowser(String browserType){
         if (browserType.equalsIgnoreCase("chrome")) {
@@ -28,11 +54,12 @@ public class CommonOps extends Base {
             throw new RuntimeException("Invalid Browser Type");
 
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        wait = new WebDriverWait(driver, 5);
-        driver.get("http://localhost:3000/");
+        driver.manage().timeouts().implicitlyWait(Long.parseLong(getData("Timeout")), TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, Long.parseLong(getData("Timeout")));
+        driver.get(getData("url"));
         ManagePages.initGrafana();
         action = new Actions(driver);
+        softAssert = new SoftAssert();
     }
 
     public static WebDriver initChromeDriver(){
@@ -56,11 +83,10 @@ public class CommonOps extends Base {
 
     @BeforeClass
     public void startSession(){
-        String platform = "web";
-        if (platform.equalsIgnoreCase("web")){
-            initBrowser("chrome");
+        if (getData("PlatformName").equalsIgnoreCase("web")){
+            initBrowser(getData("BrowserName"));
         }
-        else if (platform.equalsIgnoreCase("mobile")) {
+        else if (getData("PlatformName").equalsIgnoreCase("mobile")) {
             //initMobile();
         }
         else
